@@ -1,0 +1,62 @@
+<div class="root">
+  <div class="navbar">
+    <div class="navbar-brand">
+      <h1 class="app-name">KANBAN BOARD</h1>
+    </div>
+  </div>
+
+  <div class="board">
+    <div class="board-wrapper">
+      <div class="board-columns" cdkDropListGroup>
+        <div class="board-column" *ngFor="let column of board.columns">
+          <div class="column-title">
+            {{ column.name }} ( {{column.count}} )
+            <button mat-icon-button (click)="confirmDialogDelete(column.name)">
+              <mat-icon style="color: #f99e98">delete</mat-icon>
+            </button>
+          </div>
+          <div
+            class="tasks-container"
+            cdkDropList
+            [cdkDropListData]="column.tasks"
+            (cdkDropListDropped)="drop($event)"
+          >
+            <div class="task" *ngFor="let item of column.tasks" cdkDrag>
+              {{ item }}
+              <button mat-icon-button (click)="confirmDialogDelDetail(column.name,item)">
+                <mat-icon style="color: #f99e98">clear</mat-icon>
+              </button>
+            </div>
+            <div class="ctl-input">
+              <mat-form-field class="example-full-width">
+                <mat-label>Text your Job (Press Enter)</mat-label>
+                <input #txtIn matInput (keydown.enter)="addJob($event, column.name,validShow)" />
+              </mat-form-field>
+              <p #validShow hidden style="color: red;">This field is require!</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="simple-card">
+        <div class="input-add">
+          <mat-form-field class="example-full-width">
+            <input
+              matInput
+              (keydown.enter)="addColumn($event)"
+              placeholder="Create new List (Press enter)"
+              #newList
+            />
+          </mat-form-field>
+          <button
+            mat-raised-button
+            color="primary"
+            style="background-color: #374eae"
+            (click)="addColumn($event, newList)"
+          >
+            <mat-icon>add</mat-icon> Add
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
